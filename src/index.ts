@@ -14,7 +14,7 @@ app.get("/", (c) => {
 });
 
 // 1. GET /leaderboard → Top 10
-app.get("/leaderboard", async (c) => {
+app.get("/api/v1/leaderboard", async (c) => {
   const topPlayers = await prisma.player.findMany({
     orderBy: { score: "desc" },
     take: 10,
@@ -25,7 +25,7 @@ app.get("/leaderboard", async (c) => {
 });
 
 // 2. GET /leaderboard/:userId → Rank & score 1 player
-app.get("/leaderboard/:userId", async (c) => {
+app.get("/api/v1/leaderboard/:userId", async (c) => {
   const userId = c.req.param("userId");
 
   const player = await prisma.player.findUnique({
@@ -46,7 +46,7 @@ app.get("/leaderboard/:userId", async (c) => {
 });
 
 // 3. POST /leaderboard → Update skor kalau lebih tinggi
-app.post("/leaderboard", async (c) => {
+app.post("/api/v1/leaderboard", async (c) => {
   const { userId, score } = await c.req.json();
 
   const player = await prisma.player.findUnique({ where: { id: userId } });
