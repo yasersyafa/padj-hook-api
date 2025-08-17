@@ -2,7 +2,9 @@
   "name": "hono",
   "type": "module",
   "dependencies": {
-    "hono": "^4.9.2"
+    "@upstash/redis": "^1.35.3",
+    "hono": "^4.9.2",
+    "zod": "^4.0.17"
   },
   "scripts": {
     "dev": "bun run --watch src/index.ts"
