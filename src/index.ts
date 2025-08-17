@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { prisma } from "./db/prisma.ts";
+import { prisma } from "./db/prisma.js";
 
 const app = new Hono();
 
