@@ -1,14 +1,19 @@
 import { Hono } from "hono";
 import { redis } from "../database/redis.ts";
+import { apiKeyAuth } from "../middlewares/auth.ts";
 
 const leaderboard = new Hono();
 
 // submit a score
-leaderboard.post("/", async (c) => {
+leaderboard.post("/", apiKeyAuth, async (c) => {
   const { userId, score } = await c.req.json<{
     userId: string;
     score: number;
   }>();
+
+  if (!userId || typeof score !== "number") {
+    return c.json({ error: "Invalid payload" }, 400);
+  }
 
   // store to redis
   await redis.zadd("leaderboard:2025", {
