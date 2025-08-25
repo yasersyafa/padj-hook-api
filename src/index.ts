@@ -49,16 +49,16 @@ app.get(`${BASE_API}/leaderboard/:userId`, async (c) => {
 
 // 3. POST /leaderboard → Update skor kalau lebih tinggi
 app.post(`${BASE_API}/leaderboard`, async (c) => {
-  const { userId, score } = await c.req.json();
+  const { username, score } = await c.req.json();
 
-  const player = await prisma.player.findUnique({ where: { id: userId } });
+  const player = await prisma.player.findUnique({ where: { username } });
   if (!player) {
     return c.json({ error: "Player not found" }, 404);
   }
 
   if (score > player.score) {
     const updated = await prisma.player.update({
-      where: { id: userId },
+      where: { username },
       data: { score },
     });
     return c.json({ message: "Score updated", player: updated });
@@ -84,7 +84,7 @@ app.post(`${BASE_API}/check-player`, async (c) => {
 });
 
 // 5. POST Player
-app.post(`/api/${process.env.API_VERSION}/player`, async (c) => {
+app.post(`${BASE_API}/player`, async (c) => {
   const { username, score } = await c.req.json<{
     username: string;
     score: number;
